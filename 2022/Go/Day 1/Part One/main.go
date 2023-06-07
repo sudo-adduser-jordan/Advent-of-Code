@@ -9,20 +9,17 @@ import (
 
 func main() {
 
-	// get file
-	file, error := os.Open("calories.txt")
+	file, error := os.Open("input.txt")
 	if error != nil {
 		fmt.Println(error)
 		os.Exit(1)
 	}
+	defer file.Close()
 
-	// init scanner
 	scanner := bufio.NewScanner(file)
 
-	//init map
 	calories := make(map[int]int)
 
-	// loop file by line
 	var total int
 	counter := 1
 	for scanner.Scan() {
@@ -30,23 +27,16 @@ func main() {
 		line := scanner.Text()
 		number, error := strconv.Atoi(line)
 		if error != nil {
-			// fmt.Println(error)
-		}
-
-		if number == 0 {
 			calories[counter] = total
 			total = 0
 			counter += 1
-		}
-
-		if number != 0 {
+		} else {
 			total += number
 		}
-
 	}
+
 	var k int
 	var v int
-	// does not check for matching values
 	for key, value := range calories {
 		if value > v {
 			k = key
