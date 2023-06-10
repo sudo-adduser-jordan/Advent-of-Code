@@ -31,22 +31,10 @@ func main() {
 		arrayOne := strings.Split(stringOne, "-")
 		arrayTwo := strings.Split(stringTwo, "-")
 
-		rangeOneStart, error := strconv.Atoi(arrayTwo[0])
-		if error != nil {
-			panic(error)
-		}
-		rangeOneEnd, error := strconv.Atoi(arrayTwo[1])
-		if error != nil {
-			panic(error)
-		}
-		rangeTwoStart, error := strconv.Atoi(arrayOne[0])
-		if error != nil {
-			panic(error)
-		}
-		rangeTwoEnd, error := strconv.Atoi(arrayOne[1])
-		if error != nil {
-			panic(error)
-		}
+		rangeOneStart, _ := strconv.Atoi(arrayTwo[0])
+		rangeOneEnd, _ := strconv.Atoi(arrayTwo[1])
+		rangeTwoStart, _ := strconv.Atoi(arrayOne[0])
+		rangeTwoEnd, _ := strconv.Atoi(arrayOne[1])
 
 		if rangeTwoStart >= rangeOneStart && rangeTwoEnd <= rangeOneEnd || rangeOneStart >= rangeTwoStart && rangeOneEnd <= rangeTwoEnd {
 			total++
