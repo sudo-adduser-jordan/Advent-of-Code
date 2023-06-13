@@ -2,10 +2,7 @@ module Go
 
 go 1.20
 
-require (
-	github.com/charmbracelet/lipgloss v0.7.1
-	github.com/ttacon/chalk v0.0.0-20160626202418-22c06c80ed31
-)
+require github.com/charmbracelet/lipgloss v0.7.1
 
 require (
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect

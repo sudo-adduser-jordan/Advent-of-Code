@@ -2,14 +2,12 @@ package main
 
 import (
 	"Go/cast"
+	"Go/styles"
 
 	"bufio"
 	"fmt"
 	"os"
 	"strings"
-
-	"github.com/charmbracelet/lipgloss"
-	"github.com/ttacon/chalk"
 )
 
 type Directory struct {
@@ -29,9 +27,10 @@ func main() {
 
 	root := ParseInput(scanner)
 
-	x := SumDirectories(root)
+	x := cast.ToString(SumDirectories(root))
 
-	fmt.Println(x)
+	fmt.Println()
+	fmt.Println(styles.GreenText("The sum of the directories with sizes <100000 is: " + x))
 }
 
 func ParseInput(scanner *bufio.Scanner) *Directory {
@@ -45,17 +44,17 @@ func ParseInput(scanner *bufio.Scanner) *Directory {
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		array := strings.Split(line, " ")
 		fmt.Println()
-		fmt.Println(chalk.Magenta, array, chalk.Reset)
+		fmt.Println(styles.PurpleLabel(line))
 
+		array := strings.Split(line, " ")
 		switch array[0] {
 		// Execute Command
 		case "$":
 			switch array[1] {
 			// Change Directory
 			case "cd":
-				fmt.Println(chalk.Red, array[2], chalk.Reset)
+				fmt.Println(styles.RedText(array[2]))
 				switch array[2] {
 				case "..":
 					iterator = iterator.Parent
@@ -71,7 +70,7 @@ func ParseInput(scanner *bufio.Scanner) *Directory {
 				}
 			// Skip
 			case "ls":
-				fmt.Println(chalk.Green, "Skip", chalk.Reset)
+				fmt.Println(styles.GreenText("Skip"))
 				continue
 			}
 		// Add Directory
@@ -89,9 +88,10 @@ func ParseInput(scanner *bufio.Scanner) *Directory {
 		}
 
 		// Print Current Directory
-		fmt.Println(ToStringDirectory(*iterator))
+		fmt.Println(styles.GreenStruct(*iterator))
 		for index, value := range *&iterator.Files {
-			fmt.Println(ToStringFiles(index, value))
+			s := index + " " + cast.ToString(value)
+			fmt.Println(styles.BlueText(s))
 		}
 	}
 
@@ -108,13 +108,14 @@ func FillSize(iterator *Directory) int {
 		size += FillSize(v)
 	}
 	for _, v := range iterator.Files {
-		// fmt.Println(v)
 		size += v
 	}
 
 	iterator.Size = size
-	fmt.Println(chalk.Red, iterator.Name)
-	fmt.Println(iterator.Size, chalk.Reset)
+
+	fmt.Println()
+	fmt.Println(styles.RedLabel(iterator.Name))
+	fmt.Println(iterator.Size)
 
 	return size
 }
@@ -131,30 +132,4 @@ func SumDirectories(iterator *Directory) int {
 		sum += SumDirectories(v)
 	}
 	return sum
-}
-
-// Day 7
-func ToStringDirectory(t Directory) lipgloss.Style {
-	s := fmt.Sprintf("%+v", t)
-
-	var style = lipgloss.NewStyle().
-		SetString(s).
-		Bold(true).
-		Background(lipgloss.Color("0")).
-		Foreground(lipgloss.Color("2"))
-
-	return style
-}
-
-// Day 7
-func ToStringFiles(s string, i int) lipgloss.Style {
-	s = fmt.Sprintf(s, i)
-
-	var style = lipgloss.NewStyle().
-		SetString(s).
-		Bold(true).
-		Background(lipgloss.Color("0")).
-		Foreground(lipgloss.Color("6"))
-
-	return style
 }

@@ -22,3 +22,24 @@ func ToInt(arg interface{}) int {
 	}
 	return val
 }
+
+// ToString will case a given arg into an int type.
+// Supported types are:
+//   - int
+//   - byte
+//   - rune
+func ToString(arg interface{}) string {
+	var str string
+	switch arg.(type) {
+	case int:
+		str = strconv.Itoa(arg.(int))
+	case byte:
+		b := arg.(byte)
+		str = string(rune(b))
+	case rune:
+		str = string(arg.(rune))
+	default:
+		panic(fmt.Sprintf("unhandled type for string casting %T", arg))
+	}
+	return str
+}
