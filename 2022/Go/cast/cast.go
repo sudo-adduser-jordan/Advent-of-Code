@@ -43,3 +43,27 @@ func ToString(arg interface{}) string {
 	}
 	return str
 }
+
+// SliceToInt will case a given arg into an []int type.
+// Supported types are:
+//   - []byte
+func SliceToInt(arg interface{}) []int {
+	var slice []int
+	switch arg.(type) {
+	case []byte:
+		for _, b := range arg.([]byte) {
+			value, err := strconv.Atoi(string(b))
+			if err != nil {
+				panic("error converting []byte to []int " + err.Error())
+			}
+			slice = append(slice, value)
+		}
+	case []string:
+		panic(fmt.Sprintf("unhandled type for string casting %T", arg))
+	case []rune:
+		panic(fmt.Sprintf("unhandled type for string casting %T", arg))
+	default:
+		panic(fmt.Sprintf("unhandled type for string casting %T", arg))
+	}
+	return slice
+}

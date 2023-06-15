@@ -6,10 +6,15 @@ import (
 	"os"
 )
 
+var input = "input.txt"
+
 func main() {
-	file, _ := os.Open("input.txt")
+	file, _ := os.Open(input)
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
 
-	fmt.Print(scanner)
+	for scanner.Scan() {
+		line := scanner.Text()
+		fmt.Print(line)
+	}
 }
